@@ -2,7 +2,9 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Problem } from "@/components/Problem";
 import { Solution } from "@/components/Solution";
+import { VLUCertified } from "@/components/VLUCertified";
 import { HowItWorks } from "@/components/HowItWorks";
+import { ProductShowcase } from "@/components/ProductShowcase";
 import { Features } from "@/components/Features";
 import { Personas } from "@/components/Personas";
 import { Technology } from "@/components/Technology";
@@ -17,7 +19,9 @@ export default function Home() {
       <Hero />
       <Problem />
       <Solution />
+      <VLUCertified />
       <HowItWorks />
+      <ProductShowcase />
       <Features />
       <Personas />
       <Technology />

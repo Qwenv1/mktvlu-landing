@@ -1,17 +1,16 @@
 import { cn } from "@/lib/utils";
 import { motion, HTMLMotionProps } from "framer-motion";
 
-interface GlassCardProps extends HTMLMotionProps<"div"> {
+interface GlassMintCardProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   className?: string;
-  hoverEffect?: boolean;
 }
 
-export function GlassCard({ children, className, hoverEffect = true, ...props }: GlassCardProps) {
+export function GlassMintCard({ children, className, ...props }: GlassMintCardProps) {
   return (
     <motion.div
       className={cn(
-        hoverEffect ? "glass-card transition-all duration-300" : "glass-card-static",
+        "glass-mint rounded-3xl p-8 border border-mint/20 shadow-[0_0_20px_rgba(52,211,153,0.05)]",
         className
       )}
       {...props}

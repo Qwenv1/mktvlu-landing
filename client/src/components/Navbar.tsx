@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@assets/mktvlu-logo_1771035935629.png";
 import { cn } from "@/lib/utils";
+import { PricingModal } from "@/components/PricingModal";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pricingOpen, setPricingOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,45 +19,53 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setMobileMenuOpen(false);
+  };
+
   const navLinks = [
-    { name: "Technology", href: "#technology" },
-    { name: "Product", href: "#features" },
-    { name: "Pricing", href: "#" }, // Future
+    { name: "Product", action: () => scrollTo("product") },
+    { name: "Technology", action: () => scrollTo("technology") },
+    { name: "Pricing", action: () => setPricingOpen(true) },
   ];
 
   return (
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-          scrolled ? "bg-black/80 backdrop-blur-md border-white/[0.06] py-4" : "bg-transparent py-6"
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          scrolled ? "glass-nav py-4" : "bg-transparent py-6"
         )}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+            className="flex items-center gap-3 group"
+          >
             <img 
               src={logo} 
               alt="MKTVLU" 
-              width={32} 
-              height={32} 
+              width={28} 
+              height={28} 
               className="opacity-85 transition-opacity group-hover:opacity-100 invert" 
             />
             <span className="font-bold tracking-[1px] text-white/75 group-hover:text-white transition-colors text-[18px]">
               MKTVLU
             </span>
-          </a>
+          </button>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.name}
-                href={link.href}
-                className="text-[13px] font-medium text-white/60 hover:text-white transition-colors"
+                onClick={link.action}
+                className="text-[13px] font-medium text-white/60 hover:text-white transition-all duration-150"
               >
                 {link.name}
-              </a>
+              </button>
             ))}
             <Button 
               asChild
@@ -88,14 +98,13 @@ export function Navbar() {
           >
             <div className="flex flex-col gap-6 text-center">
               {navLinks.map((link) => (
-                <a
+                <button
                   key={link.name}
-                  href={link.href}
+                  onClick={link.action}
                   className="text-2xl font-serif italic text-white/80 hover:text-white"
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
               <Button 
                 asChild
@@ -109,6 +118,8 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <PricingModal open={pricingOpen} onClose={() => setPricingOpen(false)} />
     </>
   );
 }

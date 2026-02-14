@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { fadeUp } from "@/lib/animations";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { VLUBadge } from "@/components/ui/VLUBadge";
 
 export function Solution() {
   return (
@@ -54,15 +55,16 @@ export function Solution() {
             }
         }}
       >
-        <GlassCard className="p-8 backdrop-blur-xl border-white/10 bg-white/[0.04]">
-          <div className="flex flex-col gap-6">
+        <GlassCard className="p-8 backdrop-blur-xl border-white/10 bg-white/[0.04] relative">
+          <div className="absolute top-6 right-6">
+            <VLUBadge size="sm" />
+          </div>
+
+          <div className="flex flex-col gap-6 pt-2">
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="text-lg font-medium text-white">iPhone 15 Pro Max</h3>
                 <p className="text-sm text-white/40">256GB · Good Condition</p>
-              </div>
-              <div className="px-2 py-1 rounded bg-white/5 text-[10px] uppercase tracking-wider text-white/40 border border-white/5">
-                Valuated
               </div>
             </div>
 
@@ -83,9 +85,9 @@ export function Solution() {
             </div>
 
             <div className="flex flex-wrap gap-2 justify-center pt-2">
-              <span className="px-3 py-1 bg-white/5 rounded-full text-[11px] text-white/50">42 listings</span>
-              <span className="px-3 py-1 bg-white/5 rounded-full text-[11px] text-white/50">4 platforms</span>
-              <span className="px-3 py-1 bg-mint/10 text-mint rounded-full text-[11px]">94% confidence</span>
+              <span className="glass-pill text-[11px] text-white/50">42 listings</span>
+              <span className="glass-pill text-[11px] text-white/50">4 platforms</span>
+              <span className="glass-pill text-mint text-[11px] bg-mint/10 border-mint/20">94% confidence</span>
             </div>
           </div>
         </GlassCard>
