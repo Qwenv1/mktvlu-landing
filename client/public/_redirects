@@ -1,1 +1,4 @@
-/*    /index.html   200
+/*    /index.html   200 # Add a space or comment to any file, then:
+git add .
+git commit -m "Trigger deploy with netlify.toml"
+git push
