@@ -8,20 +8,26 @@ import { fadeUp } from "@/lib/animations";
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Sphere background */}
+      {/* Sphere background - Enhanced version */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none translate-y-[60px]">
-        <ParticleSphere size={500} className="opacity-35" />
+        <ParticleSphere 
+          size={500} 
+          interactive={true} 
+          showText={false} 
+          className="opacity-35 pointer-events-auto" 
+        />
       </div>
       
       {/* Radial fade overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,black_80%)] pointer-events-none" />
       
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center pointer-events-none">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeUp}
+          className="pointer-events-auto"
         >
           <SectionLabel>Market Intelligence 2.0</SectionLabel>
         </motion.div>
@@ -53,7 +59,7 @@ export function Hero() {
         </motion.p>
         
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto"
           initial="hidden"
           animate="visible"
           variants={{
