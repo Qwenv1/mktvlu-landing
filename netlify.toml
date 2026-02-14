@@ -1,9 +1,3 @@
-[build]
-  publish = "public"
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-[functions."valuate"]
-  timeout = 26
+git add netlify.toml
+   git commit -m "Fix publish directory in netlify.toml"
+   git push
