@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import ParticleSphere from "@/components/ParticleSphere";
 
 const INTRO_DURATION_MS = 2300;
-const ORBIT_LOOP_SECONDS = 22;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -22,6 +21,7 @@ function CornerSet({ colorClass }: { colorClass: string }) {
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const orbitPathId = useId();
+  const topArcPathId = useId();
 
   const [introComplete, setIntroComplete] = useState(false);
   const [arcChars, setArcChars] = useState(prefersReducedMotion ? ARC_TEXT.length : 0);
@@ -94,6 +94,21 @@ export function Hero() {
     // Full clockwise orbit so text can revolve around the globe perimeter.
     return `M ${cx} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${topY}`;
   }, [sphereSize]);
+
+  const topArcPath = useMemo(() => {
+    const cx = sphereSize / 2;
+    const cy = sphereSize / 2;
+    const r = sphereSize * 0.43;
+    const a1 = (210 * Math.PI) / 180;
+    const a2 = (330 * Math.PI) / 180;
+    const x1 = cx + Math.cos(a1) * r;
+    const y1 = cy + Math.sin(a1) * r;
+    const x2 = cx + Math.cos(a2) * r;
+    const y2 = cy + Math.sin(a2) * r;
+    return `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`;
+  }, [sphereSize]);
+
+  const isMobile = sphereSize < 400;
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-black pt-20">
@@ -175,37 +190,68 @@ export function Hero() {
           >
             <defs>
               <path id={orbitPathId} d={orbitPath} fill="none" />
+              <path id={topArcPathId} d={topArcPath} fill="none" />
             </defs>
 
-            <motion.g
-              style={{ transformOrigin: `${sphereSize / 2}px ${sphereSize / 2}px` }}
-              initial={prefersReducedMotion ? false : { rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{
-                delay: withDelay(0.92),
-                duration: prefersReducedMotion ? 0.2 : ORBIT_LOOP_SECONDS,
-                repeat: Infinity,
-                ease: "linear",
-              }}
+            <text
+              fill="rgba(52,211,153,0.82)"
+              fontSize={sphereSize < 400 ? 12 : 15}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              letterSpacing="0.12em"
             >
-              <text
-                fill="rgba(52,211,153,0.82)"
-                fontSize={sphereSize < 400 ? 12 : 15}
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                letterSpacing="0.12em"
-              >
-                <textPath href={`#${orbitPathId}`} startOffset="0%" textAnchor="middle">
+              {isMobile ? (
+                <textPath href={`#${topArcPathId}`} startOffset="50%" textAnchor="middle">
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
-              </text>
+              ) : (
+                <motion.textPath
+                  href={`#${orbitPathId}`}
+                  textAnchor="middle"
+                  initial={prefersReducedMotion ? false : { startOffset: "0%" }}
+                  animate={{ startOffset: "100%" }}
+                  transition={{
+                    delay: withDelay(0.92),
+                    duration: prefersReducedMotion ? 0.2 : 11,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  startOffset="0%"
+                >
+                  {ARC_TEXT.slice(0, arcChars)}
+                </motion.textPath>
+              )}
+            </text>
 
-              <circle
-                cx={sphereSize / 2}
-                cy={sphereSize * 0.07}
+            {!isMobile && (
+              <motion.circle
                 r={sphereSize < 400 ? 2.6 : 3.6}
                 fill="rgba(52,211,153,0.95)"
-              />
-            </motion.g>
+                initial={prefersReducedMotion ? false : { cx: sphereSize / 2, cy: sphereSize * 0.07 }}
+                animate={{
+                  cx: [
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                  ],
+                  cy: [
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                  ],
+                }}
+                transition={{
+                  delay: withDelay(0.92),
+                  duration: prefersReducedMotion ? 0.2 : 11,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+              </motion.circle>
+            )}
           </motion.svg>
 
           {showIntro && (
