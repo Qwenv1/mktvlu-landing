@@ -114,15 +114,15 @@ export function Hero() {
     <section className="relative min-h-screen overflow-hidden bg-black pt-20">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_34%,black_84%)] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-[1500px] flex-col px-6 pb-14 pt-6 md:grid md:grid-cols-[minmax(320px,1fr)_auto_minmax(260px,1fr)] md:items-center md:gap-x-10 md:px-10 md:pt-8">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-[1500px] flex-col px-6 pb-14 pt-6 md:grid md:grid-cols-[minmax(420px,1fr)_auto_minmax(240px,1fr)] md:items-center md:gap-x-10 md:px-10 md:pt-8 lg:grid-cols-[minmax(560px,1fr)_auto_minmax(260px,1fr)]">
         <motion.div
-          className="pointer-events-none z-20 mb-6 text-left md:mb-0 md:max-w-[560px] md:self-start md:pt-10"
+          className="pointer-events-none z-20 mb-6 text-left md:mb-0 md:max-w-none md:self-start md:pt-4"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: withDelay(1.0), duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.h1
-            className="font-serif text-[48px] leading-[0.95] tracking-tight text-white md:text-[72px] lg:text-[86px] xl:text-[92px]"
+            className="font-serif text-[48px] leading-[0.95] tracking-tight text-white md:whitespace-nowrap md:text-[62px] lg:text-[72px] xl:text-[80px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: withDelay(1.28), duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
@@ -132,7 +132,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            className="mt-3 text-[24px] leading-tight text-white/62 md:text-[34px] lg:text-[40px] xl:text-[44px]"
+            className="mt-3 text-[24px] leading-tight text-white/62 md:whitespace-nowrap md:text-[38px] lg:text-[44px] xl:text-[48px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: withDelay(1.46), duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -265,7 +265,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="hidden pointer-events-auto md:flex md:flex-col md:items-start md:justify-self-end"
+          className="hidden pointer-events-auto md:flex md:flex-col md:items-end md:self-end md:justify-self-end md:pb-20 md:text-right"
           initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: withDelay(1.72), duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -274,16 +274,16 @@ export function Hero() {
             href="https://mktvlu.co"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center rounded-full bg-mint px-8 py-4 text-[30px] font-semibold text-black shadow-[0_0_24px_rgba(52,211,153,0.26)] transition-opacity hover:opacity-90 lg:text-[38px]"
+            className="font-serif leading-none text-mint drop-shadow-[0_0_20px_rgba(52,211,153,0.22)] transition-opacity hover:opacity-90 md:text-[68px] lg:text-[82px] xl:text-[92px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: withDelay(1.72), duration: 0.44, ease: [0.16, 1, 0.3, 1] }}
           >
-            Launch App <ArrowRight className="ml-3 h-6 w-6" />
+            Launch App
           </motion.a>
 
           <motion.button
-            className="mt-4 text-[34px] font-medium text-white/50 transition-colors hover:text-white/75 lg:text-[44px]"
+            className="mt-2 text-[34px] font-medium text-white/45 transition-colors hover:text-white/65 lg:text-[40px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: withDelay(2.24), duration: 0.38, ease: "easeOut" }}
