@@ -1,10 +1,12 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useId, useMemo, useState } from "react";
+import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ParticleSphere from "@/components/ParticleSphere";
 
 const INTRO_DURATION_MS = 2300;
+const ORBIT_DELAY_MS = 920;
+const ORBIT_LOOP_MS = 11000;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -26,6 +28,8 @@ export function Hero() {
   const [introComplete, setIntroComplete] = useState(false);
   const [arcChars, setArcChars] = useState(prefersReducedMotion ? ARC_TEXT.length : 0);
   const [sphereSize, setSphereSize] = useState(460);
+  const orbitOffset = useMotionValue(0);
+  const orbitStartRef = useRef<number | null>(null);
 
   useEffect(() => {
     const updateSphereSize = () => {
@@ -83,6 +87,31 @@ export function Hero() {
     };
   }, [prefersReducedMotion, introComplete]);
 
+  useEffect(() => {
+    orbitStartRef.current = null;
+    if (prefersReducedMotion) {
+      orbitOffset.set(0);
+    }
+  }, [prefersReducedMotion, orbitOffset]);
+
+  useAnimationFrame((time) => {
+    if (prefersReducedMotion) return;
+
+    if (orbitStartRef.current === null) {
+      orbitStartRef.current = time;
+    }
+
+    const elapsed = time - orbitStartRef.current;
+    if (elapsed < ORBIT_DELAY_MS) {
+      orbitOffset.set(0);
+      return;
+    }
+
+    const activeElapsed = elapsed - ORBIT_DELAY_MS;
+    const wrappedOffset = ((activeElapsed / ORBIT_LOOP_MS) * 100) % 100;
+    orbitOffset.set(wrappedOffset);
+  });
+
   const withDelay = (delay: number) => (prefersReducedMotion ? 0 : delay);
   const showIntro = !prefersReducedMotion && !introComplete;
 
@@ -109,6 +138,20 @@ export function Hero() {
   }, [sphereSize]);
 
   const isMobile = sphereSize < 400;
+  const orbitPrimaryOffset = useTransform(orbitOffset, (value) => `${value}%`);
+  const orbitSecondaryOffset = useTransform(orbitOffset, (value) => `${value - 100}%`);
+  const orbitDotCx = useTransform(orbitOffset, (value) => {
+    const cx = sphereSize / 2;
+    const radius = sphereSize * 0.43;
+    const angle = ((value % 100) / 100) * Math.PI * 2;
+    return cx + radius * Math.sin(angle);
+  });
+  const orbitDotCy = useTransform(orbitOffset, (value) => {
+    const cy = sphereSize / 2;
+    const radius = sphereSize * 0.43;
+    const angle = ((value % 100) / 100) * Math.PI * 2;
+    return cy - radius * Math.cos(angle);
+  });
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-black pt-20">
@@ -184,6 +227,7 @@ export function Hero() {
           <motion.svg
             className="pointer-events-none absolute inset-0 h-full w-full"
             viewBox={`0 0 ${sphereSize} ${sphereSize}`}
+            overflow="visible"
             initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: withDelay(0.9), duration: 0.36 }}
@@ -204,51 +248,34 @@ export function Hero() {
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
               ) : (
-                <motion.textPath
-                  href={`#${orbitPathId}`}
-                  textAnchor="middle"
-                  initial={prefersReducedMotion ? false : { startOffset: "0%" }}
-                  animate={{ startOffset: "100%" }}
-                  transition={{
-                    delay: withDelay(0.92),
-                    duration: prefersReducedMotion ? 0.2 : 11,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  startOffset="0%"
-                >
+                <motion.textPath href={`#${orbitPathId}`} textAnchor="middle" startOffset={orbitPrimaryOffset}>
                   {ARC_TEXT.slice(0, arcChars)}
                 </motion.textPath>
               )}
             </text>
 
             {!isMobile && (
+              <text
+                fill="rgba(52,211,153,0.82)"
+                fontSize={sphereSize < 400 ? 12 : 15}
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                letterSpacing="0.12em"
+              >
+                <motion.textPath href={`#${orbitPathId}`} textAnchor="middle" startOffset={orbitSecondaryOffset}>
+                  {ARC_TEXT.slice(0, arcChars)}
+                </motion.textPath>
+              </text>
+            )}
+
+            {!isMobile && (
               <motion.circle
                 r={sphereSize < 400 ? 2.6 : 3.6}
                 fill="rgba(52,211,153,0.95)"
-                initial={prefersReducedMotion ? false : { cx: sphereSize / 2, cy: sphereSize * 0.07 }}
-                animate={{
-                  cx: [
-                    sphereSize / 2,
-                    sphereSize * 0.93,
-                    sphereSize / 2,
-                    sphereSize * 0.07,
-                    sphereSize / 2,
-                  ],
-                  cy: [
-                    sphereSize * 0.07,
-                    sphereSize / 2,
-                    sphereSize * 0.93,
-                    sphereSize / 2,
-                    sphereSize * 0.07,
-                  ],
-                }}
-                transition={{
-                  delay: withDelay(0.92),
-                  duration: prefersReducedMotion ? 0.2 : 11,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
+                cx={orbitDotCx}
+                cy={orbitDotCy}
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: withDelay(0.92), duration: 0.2 }}
               >
               </motion.circle>
             )}
