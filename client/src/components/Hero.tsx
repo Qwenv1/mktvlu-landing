@@ -10,10 +10,10 @@ const ARC_TEXT = "See through the market noise. Find the real price - not the li
 function CornerSet({ colorClass }: { colorClass: string }) {
   return (
     <>
-      <div className={`pointer-events-none absolute left-2 top-2 h-20 w-20 rounded-tl-[30px] border-l-[4px] border-t-[4px] ${colorClass}`} />
-      <div className={`pointer-events-none absolute right-2 top-2 h-20 w-20 rounded-tr-[30px] border-r-[4px] border-t-[4px] ${colorClass}`} />
-      <div className={`pointer-events-none absolute bottom-2 left-2 h-20 w-20 rounded-bl-[30px] border-b-[4px] border-l-[4px] ${colorClass}`} />
-      <div className={`pointer-events-none absolute bottom-2 right-2 h-20 w-20 rounded-br-[30px] border-b-[4px] border-r-[4px] ${colorClass}`} />
+      <div className={`pointer-events-none absolute left-3 top-3 h-16 w-16 rounded-tl-[24px] border-l-[3px] border-t-[3px] ${colorClass}`} />
+      <div className={`pointer-events-none absolute right-3 top-3 h-16 w-16 rounded-tr-[24px] border-r-[3px] border-t-[3px] ${colorClass}`} />
+      <div className={`pointer-events-none absolute bottom-3 left-3 h-16 w-16 rounded-bl-[24px] border-b-[3px] border-l-[3px] ${colorClass}`} />
+      <div className={`pointer-events-none absolute bottom-3 right-3 h-16 w-16 rounded-br-[24px] border-b-[3px] border-r-[3px] ${colorClass}`} />
     </>
   );
 }
@@ -25,16 +25,16 @@ export function Hero() {
 
   const [introComplete, setIntroComplete] = useState(false);
   const [arcChars, setArcChars] = useState(prefersReducedMotion ? ARC_TEXT.length : 0);
-  const [sphereSize, setSphereSize] = useState(560);
+  const [sphereSize, setSphereSize] = useState(460);
 
   useEffect(() => {
     const updateSphereSize = () => {
       if (window.innerWidth < 640) {
-        setSphereSize(340);
+        setSphereSize(300);
       } else if (window.innerWidth < 1024) {
-        setSphereSize(440);
+        setSphereSize(380);
       } else {
-        setSphereSize(560);
+        setSphereSize(460);
       }
     };
 
