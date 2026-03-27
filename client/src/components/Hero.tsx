@@ -4,9 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ParticleSphere from "@/components/ParticleSphere";
 
-const INTRO_DURATION_MS = 3000;
-const ORBIT_START_MS = 900;
-const ORBIT_LOOP_SECONDS = 36;
+const INTRO_DURATION_MS = 2300;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -26,7 +24,6 @@ export function Hero() {
   const topArcPathId = useId();
 
   const [introComplete, setIntroComplete] = useState(false);
-  const [orbitActive, setOrbitActive] = useState(prefersReducedMotion);
   const [arcChars, setArcChars] = useState(prefersReducedMotion ? ARC_TEXT.length : 0);
   const [sphereSize, setSphereSize] = useState(560);
 
@@ -62,20 +59,6 @@ export function Hero() {
   }, [prefersReducedMotion]);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setOrbitActive(true);
-      return;
-    }
-
-    setOrbitActive(false);
-    const orbitTimer = window.setTimeout(() => {
-      setOrbitActive(true);
-    }, ORBIT_START_MS);
-
-    return () => window.clearTimeout(orbitTimer);
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
     if (prefersReducedMotion || introComplete) {
       setArcChars(ARC_TEXT.length);
       return;
@@ -89,9 +72,9 @@ export function Hero() {
             if (textTimer) window.clearInterval(textTimer);
             return ARC_TEXT.length;
           }
-          return Math.min(prev + 1, ARC_TEXT.length);
+          return Math.min(prev + 2, ARC_TEXT.length);
         });
-      }, 56);
+      }, 34);
     }, 860);
 
     return () => {
@@ -108,7 +91,7 @@ export function Hero() {
     const cy = sphereSize / 2;
     const orbitRadius = sphereSize * 0.43;
     const bottomY = cy + orbitRadius;
-    // Keep the path seam at the bottom so the top-arch pass is visually continuous.
+    // Place the path seam at the bottom to avoid a visible reset at the top.
     return `M ${cx} ${bottomY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${bottomY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${bottomY}`;
   }, [sphereSize]);
 
@@ -210,56 +193,64 @@ export function Hero() {
               <path id={topArcPathId} d={topArcPath} fill="none" />
             </defs>
 
-            {isMobile ? (
-              <text
-                fill="rgba(52,211,153,0.82)"
-                fontSize={12}
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                letterSpacing="0.12em"
-              >
+            <text
+              fill="rgba(52,211,153,0.82)"
+              fontSize={sphereSize < 400 ? 12 : 15}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              letterSpacing="0.12em"
+            >
+              {isMobile ? (
                 <textPath href={`#${topArcPathId}`} startOffset="50%" textAnchor="middle">
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
-              </text>
-            ) : (
-              <motion.g
-                initial={prefersReducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: withDelay(0.92), duration: 0.35 }}
-              >
-                <motion.g
-                  style={{ transformOrigin: `${sphereSize / 2}px ${sphereSize / 2}px` }}
-                  initial={false}
-                  animate={orbitActive ? { rotate: 360 } : { rotate: 0 }}
-                  transition={
-                    orbitActive
-                      ? {
-                          duration: prefersReducedMotion ? 0.2 : ORBIT_LOOP_SECONDS,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }
-                      : { duration: 0 }
-                  }
+              ) : (
+                <motion.textPath
+                  href={`#${orbitPathId}`}
+                  textAnchor="middle"
+                  initial={prefersReducedMotion ? false : { startOffset: "50%" }}
+                  animate={{ startOffset: "150%" }}
+                  transition={{
+                    delay: withDelay(0.92),
+                    duration: prefersReducedMotion ? 0.2 : 11,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  startOffset="50%"
                 >
-                  <text
-                    fill="rgba(52,211,153,0.82)"
-                    fontSize={sphereSize < 400 ? 12 : 15}
-                    fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                    letterSpacing="0.12em"
-                  >
-                    <textPath href={`#${orbitPathId}`} startOffset="50%" textAnchor="middle">
-                      {ARC_TEXT.slice(0, arcChars)}
-                    </textPath>
-                  </text>
+                  {ARC_TEXT.slice(0, arcChars)}
+                </motion.textPath>
+              )}
+            </text>
 
-                  <circle
-                    cx={sphereSize / 2}
-                    cy={sphereSize * 0.07}
-                    r={sphereSize < 400 ? 2.6 : 3.6}
-                    fill="rgba(52,211,153,0.95)"
-                  />
-                </motion.g>
-              </motion.g>
+            {!isMobile && (
+              <motion.circle
+                r={sphereSize < 400 ? 2.6 : 3.6}
+                fill="rgba(52,211,153,0.95)"
+                initial={prefersReducedMotion ? false : { cx: sphereSize / 2, cy: sphereSize * 0.07 }}
+                animate={{
+                  cx: [
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                  ],
+                  cy: [
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                  ],
+                }}
+                transition={{
+                  delay: withDelay(0.92),
+                  duration: prefersReducedMotion ? 0.2 : 11,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+              </motion.circle>
             )}
           </motion.svg>
 
