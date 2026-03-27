@@ -20,7 +20,8 @@ function CornerSet({ colorClass }: { colorClass: string }) {
 
 export function Hero() {
   const prefersReducedMotion = useReducedMotion();
-  const arcPathId = useId();
+  const orbitPathId = useId();
+  const topArcPathId = useId();
 
   const [introComplete, setIntroComplete] = useState(false);
   const [arcChars, setArcChars] = useState(prefersReducedMotion ? ARC_TEXT.length : 0);
@@ -74,7 +75,7 @@ export function Hero() {
           return Math.min(prev + 2, ARC_TEXT.length);
         });
       }, 34);
-    }, 560);
+    }, 860);
 
     return () => {
       window.clearTimeout(startTimer);
@@ -85,7 +86,7 @@ export function Hero() {
   const withDelay = (delay: number) => (prefersReducedMotion ? 0 : delay);
   const showIntro = !prefersReducedMotion && !introComplete;
 
-  const arcPath = useMemo(() => {
+  const orbitPath = useMemo(() => {
     const cx = sphereSize / 2;
     const cy = sphereSize / 2;
     const orbitRadius = sphereSize * 0.43;
@@ -93,6 +94,21 @@ export function Hero() {
     // Full clockwise orbit so text can revolve around the globe perimeter.
     return `M ${cx} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${topY}`;
   }, [sphereSize]);
+
+  const topArcPath = useMemo(() => {
+    const cx = sphereSize / 2;
+    const cy = sphereSize / 2;
+    const r = sphereSize * 0.43;
+    const a1 = (210 * Math.PI) / 180;
+    const a2 = (330 * Math.PI) / 180;
+    const x1 = cx + Math.cos(a1) * r;
+    const y1 = cy + Math.sin(a1) * r;
+    const x2 = cx + Math.cos(a2) * r;
+    const y2 = cy + Math.sin(a2) * r;
+    return `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`;
+  }, [sphereSize]);
+
+  const isMobile = sphereSize < 400;
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-black pt-20">
@@ -109,7 +125,7 @@ export function Hero() {
             className="font-serif text-[48px] leading-[0.95] tracking-tight text-white md:text-[72px] lg:text-[86px] xl:text-[92px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: withDelay(1.0), duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: withDelay(1.28), duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
           >
             <span>Bridging the </span>
             <span className="text-mint-gradient">Information Gap.</span>
@@ -119,7 +135,7 @@ export function Hero() {
             className="mt-3 text-[24px] leading-tight text-white/62 md:text-[34px] lg:text-[40px] xl:text-[44px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: withDelay(1.16), duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: withDelay(1.46), duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             Market Intelligence 2.0
           </motion.p>
@@ -170,43 +186,72 @@ export function Hero() {
             viewBox={`0 0 ${sphereSize} ${sphereSize}`}
             initial={prefersReducedMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: withDelay(0.62), duration: 0.42 }}
+            transition={{ delay: withDelay(0.9), duration: 0.36 }}
           >
             <defs>
-              <path id={arcPathId} d={arcPath} fill="none" />
+              <path id={orbitPathId} d={orbitPath} fill="none" />
+              <path id={topArcPathId} d={topArcPath} fill="none" />
             </defs>
 
-            <motion.g
-              style={{ transformOrigin: `${sphereSize / 2}px ${sphereSize / 2}px` }}
-              initial={prefersReducedMotion ? false : { rotate: -8, opacity: 0 }}
-              animate={{ rotate: 360, opacity: 1 }}
-              transition={{
-                rotate: {
-                  delay: withDelay(0.62),
-                  duration: prefersReducedMotion ? 0.2 : 1.9,
-                  ease: "linear",
-                },
-                opacity: { delay: withDelay(0.62), duration: 0.35 },
-              }}
+            <text
+              fill="rgba(52,211,153,0.82)"
+              fontSize={sphereSize < 400 ? 12 : 15}
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              letterSpacing="0.12em"
             >
-              <text
-                fill="rgba(52,211,153,0.82)"
-                fontSize={sphereSize < 400 ? 12 : 15}
-                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                letterSpacing="0.12em"
-              >
-                <textPath href={`#${arcPathId}`} startOffset="0%" textAnchor="middle">
+              {isMobile ? (
+                <textPath href={`#${topArcPathId}`} startOffset="50%" textAnchor="middle">
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
-              </text>
+              ) : (
+                <motion.textPath
+                  href={`#${orbitPathId}`}
+                  textAnchor="middle"
+                  initial={prefersReducedMotion ? false : { startOffset: "0%" }}
+                  animate={{ startOffset: "100%" }}
+                  transition={{
+                    delay: withDelay(0.92),
+                    duration: prefersReducedMotion ? 0.2 : 11,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  startOffset="0%"
+                >
+                  {ARC_TEXT.slice(0, arcChars)}
+                </motion.textPath>
+              )}
+            </text>
 
-              <circle
-                cx={sphereSize / 2}
-                cy={sphereSize * 0.07}
+            {!isMobile && (
+              <motion.circle
                 r={sphereSize < 400 ? 2.6 : 3.6}
                 fill="rgba(52,211,153,0.95)"
-              />
-            </motion.g>
+                initial={prefersReducedMotion ? false : { cx: sphereSize / 2, cy: sphereSize * 0.07 }}
+                animate={{
+                  cx: [
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                  ],
+                  cy: [
+                    sphereSize * 0.07,
+                    sphereSize / 2,
+                    sphereSize * 0.93,
+                    sphereSize / 2,
+                    sphereSize * 0.07,
+                  ],
+                }}
+                transition={{
+                  delay: withDelay(0.92),
+                  duration: prefersReducedMotion ? 0.2 : 11,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+              </motion.circle>
+            )}
           </motion.svg>
 
           {showIntro && (
@@ -223,7 +268,7 @@ export function Hero() {
           className="hidden pointer-events-auto md:absolute md:right-10 md:top-1/2 md:flex md:-translate-y-[10%] md:flex-col md:items-start"
           initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: withDelay(1.36), duration: 0.54, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: withDelay(1.72), duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.a
             href="https://mktvlu.co"
@@ -232,7 +277,7 @@ export function Hero() {
             className="inline-flex items-center rounded-full bg-mint px-8 py-4 text-[30px] font-semibold text-black shadow-[0_0_24px_rgba(52,211,153,0.26)] transition-opacity hover:opacity-90 lg:text-[38px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: withDelay(1.36), duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: withDelay(1.72), duration: 0.44, ease: [0.16, 1, 0.3, 1] }}
           >
             Launch App <ArrowRight className="ml-3 h-6 w-6" />
           </motion.a>
@@ -241,7 +286,7 @@ export function Hero() {
             className="mt-4 text-[34px] font-medium text-white/50 transition-colors hover:text-white/75 lg:text-[44px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: withDelay(1.56), duration: 0.4, ease: "easeOut" }}
+            transition={{ delay: withDelay(1.92), duration: 0.38, ease: "easeOut" }}
           >
             Learn More
           </motion.button>
@@ -251,7 +296,7 @@ export function Hero() {
           className="mt-7 flex items-center justify-center gap-5 md:hidden"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: withDelay(1.34), duration: 0.5 }}
+          transition={{ delay: withDelay(1.76), duration: 0.46 }}
         >
           <Button size="lg" className="rounded-full h-12 px-8 bg-mint hover:bg-mint/90 text-black font-medium group">
             <a href="https://mktvlu.co" target="_blank" rel="noopener noreferrer" className="flex items-center">
