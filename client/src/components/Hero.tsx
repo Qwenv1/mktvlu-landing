@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ParticleSphere from "@/components/ParticleSphere";
 
@@ -114,9 +114,9 @@ export function Hero() {
     <section className="relative min-h-screen overflow-hidden bg-black pt-20">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_34%,black_84%)] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-[1500px] flex-col px-6 pb-10 pt-6 md:px-10 md:pt-8">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-[1500px] flex-col px-6 pb-14 pt-6 md:grid md:grid-cols-[minmax(320px,1fr)_auto_minmax(260px,1fr)] md:items-center md:gap-x-10 md:px-10 md:pt-8">
         <motion.div
-          className="pointer-events-none z-20 mb-6 text-left md:absolute md:left-10 md:top-8 md:mb-0 md:max-w-[860px]"
+          className="pointer-events-none z-20 mb-6 text-left md:mb-0 md:max-w-[560px] md:self-start md:pt-10"
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: withDelay(1.0), duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -142,7 +142,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="relative mx-auto mt-2 md:mt-16"
+          className="relative mx-auto mt-2 md:mt-0 md:justify-self-center"
           style={{ width: sphereSize, height: sphereSize }}
           initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -265,7 +265,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="hidden pointer-events-auto md:absolute md:right-10 md:top-1/2 md:flex md:-translate-y-[10%] md:flex-col md:items-start"
+          className="hidden pointer-events-auto md:flex md:flex-col md:items-start md:justify-self-end"
           initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: withDelay(1.72), duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -286,27 +286,42 @@ export function Hero() {
             className="mt-4 text-[34px] font-medium text-white/50 transition-colors hover:text-white/75 lg:text-[44px]"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: withDelay(1.92), duration: 0.38, ease: "easeOut" }}
+            transition={{ delay: withDelay(2.24), duration: 0.38, ease: "easeOut" }}
           >
             Learn More
           </motion.button>
         </motion.div>
 
-        <motion.div
-          className="mt-7 flex items-center justify-center gap-5 md:hidden"
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: withDelay(1.76), duration: 0.46 }}
-        >
-          <Button size="lg" className="rounded-full h-12 px-8 bg-mint hover:bg-mint/90 text-black font-medium group">
-            <a href="https://mktvlu.co" target="_blank" rel="noopener noreferrer" className="flex items-center">
-              Launch App <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-          </Button>
+        <div className="mt-7 flex items-center justify-center gap-5 md:hidden">
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: withDelay(1.76), duration: 0.46 }}
+          >
+            <Button size="lg" className="rounded-full h-12 px-8 bg-mint hover:bg-mint/90 text-black font-medium group">
+              <a href="https://mktvlu.co" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                Launch App <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </a>
+            </Button>
+          </motion.div>
 
-          <button className="text-lg font-medium text-white/55 hover:text-white/75">
+          <motion.button
+            className="text-lg font-medium text-white/55 hover:text-white/75"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: withDelay(2.24), duration: 0.38, ease: "easeOut" }}
+          >
             Learn More
-          </button>
+          </motion.button>
+        </div>
+
+        <motion.div
+          className="pointer-events-none absolute bottom-3 left-1/2 z-20 -translate-x-1/2 text-mint/90"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: withDelay(2.48), duration: 0.38, ease: "easeOut" }}
+        >
+          <ChevronDown className="h-7 w-7 animate-bounce" />
         </motion.div>
       </div>
     </section>
