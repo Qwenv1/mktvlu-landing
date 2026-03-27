@@ -248,7 +248,7 @@ export function Hero() {
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
               ) : (
-                <motion.textPath href={`#${orbitPathId}`} textAnchor="middle" startOffset={orbitPrimaryOffset}>
+                <motion.textPath href={`#${orbitPathId}`} textAnchor="start" startOffset={orbitPrimaryOffset}>
                   {ARC_TEXT.slice(0, arcChars)}
                 </motion.textPath>
               )}
@@ -261,7 +261,7 @@ export function Hero() {
                 fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                 letterSpacing="0.12em"
               >
-                <motion.textPath href={`#${orbitPathId}`} textAnchor="middle" startOffset={orbitSecondaryOffset}>
+                <motion.textPath href={`#${orbitPathId}`} textAnchor="start" startOffset={orbitSecondaryOffset}>
                   {ARC_TEXT.slice(0, arcChars)}
                 </motion.textPath>
               </text>
