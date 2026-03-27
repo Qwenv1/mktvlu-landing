@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { MarketEdgeBanner } from "@/components/MarketEdgeBanner";
 import { Problem } from "@/components/Problem";
 import { Solution } from "@/components/Solution";
 import { VLUCertified } from "@/components/VLUCertified";
@@ -17,6 +18,7 @@ export default function Home() {
     <div className="min-h-screen bg-black text-white selection:bg-mint/30 selection:text-white overflow-x-hidden font-sans">
       <Navbar />
       <Hero />
+      <MarketEdgeBanner />
       <Problem />
       <Solution />
       <VLUCertified />
