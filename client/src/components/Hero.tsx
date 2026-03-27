@@ -86,11 +86,12 @@ export function Hero() {
   const showIntro = !prefersReducedMotion && !introComplete;
 
   const arcPath = useMemo(() => {
-    const r = sphereSize * 0.54;
-    const y = sphereSize * 0.58;
-    const startX = sphereSize * 0.2;
-    const endX = sphereSize * 0.8;
-    return `M ${startX} ${y} A ${r} ${r} 0 0 1 ${endX} ${y}`;
+    const cx = sphereSize / 2;
+    const cy = sphereSize / 2;
+    const orbitRadius = sphereSize * 0.43;
+    const topY = cy - orbitRadius;
+    // Full clockwise orbit so text can revolve around the globe perimeter.
+    return `M ${cx} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${topY}`;
   }, [sphereSize]);
 
   return (
@@ -177,23 +178,34 @@ export function Hero() {
 
             <motion.g
               style={{ transformOrigin: `${sphereSize / 2}px ${sphereSize / 2}px` }}
-              initial={prefersReducedMotion ? false : { rotate: -24, opacity: 0 }}
-              animate={{ rotate: 300, opacity: 1 }}
+              initial={prefersReducedMotion ? false : { rotate: -8, opacity: 0 }}
+              animate={{ rotate: 360, opacity: 1 }}
               transition={{
-                rotate: { delay: withDelay(0.62), duration: prefersReducedMotion ? 0.2 : 1.65, ease: "linear" },
+                rotate: {
+                  delay: withDelay(0.62),
+                  duration: prefersReducedMotion ? 0.2 : 1.9,
+                  ease: "linear",
+                },
                 opacity: { delay: withDelay(0.62), duration: 0.35 },
               }}
             >
               <text
-                fill="rgba(52,211,153,0.9)"
-                fontSize={sphereSize < 400 ? 13 : 16}
+                fill="rgba(52,211,153,0.82)"
+                fontSize={sphereSize < 400 ? 12 : 15}
                 fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                letterSpacing="0.16em"
+                letterSpacing="0.12em"
               >
-                <textPath href={`#${arcPathId}`} startOffset="50%" textAnchor="middle">
+                <textPath href={`#${arcPathId}`} startOffset="0%" textAnchor="middle">
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
               </text>
+
+              <circle
+                cx={sphereSize / 2}
+                cy={sphereSize * 0.07}
+                r={sphereSize < 400 ? 2.6 : 3.6}
+                fill="rgba(52,211,153,0.95)"
+              />
             </motion.g>
           </motion.svg>
 
