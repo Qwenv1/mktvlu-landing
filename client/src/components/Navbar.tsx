@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@assets/mktvlu-logo_1771035935629.png";
 import { cn } from "@/lib/utils";
 import { PricingModal } from "@/components/PricingModal";
 
@@ -45,11 +44,11 @@ export function Navbar() {
             className="flex items-center gap-3 group"
           >
             <img 
-              src={logo} 
+              src="/icon-180.png" 
               alt="MKTVLU" 
               width={28} 
               height={28} 
-              className="opacity-85 transition-opacity group-hover:opacity-100 invert" 
+              className="opacity-85 transition-opacity group-hover:opacity-100" 
             />
             <span className="font-bold tracking-[1px] text-white/75 group-hover:text-white transition-colors text-[18px]">
               MKTVLU
