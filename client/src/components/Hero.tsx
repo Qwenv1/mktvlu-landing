@@ -6,6 +6,7 @@ import ParticleSphere from "@/components/ParticleSphere";
 
 const INTRO_DURATION_MS = 2300;
 const ORBIT_LOOP_SECONDS = 11;
+const ORBIT_RADIUS_FACTOR = 0.39;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -90,7 +91,7 @@ export function Hero() {
   const orbitPath = useMemo(() => {
     const cx = sphereSize / 2;
     const cy = sphereSize / 2;
-    const orbitRadius = sphereSize * 0.43;
+    const orbitRadius = sphereSize * ORBIT_RADIUS_FACTOR;
     const topY = cy - orbitRadius;
     // Full clockwise orbit so text can revolve around the globe perimeter.
     return `M ${cx} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${topY}`;
@@ -99,7 +100,7 @@ export function Hero() {
   const topArcPath = useMemo(() => {
     const cx = sphereSize / 2;
     const cy = sphereSize / 2;
-    const r = sphereSize * 0.43;
+    const r = sphereSize * ORBIT_RADIUS_FACTOR;
     const a1 = (210 * Math.PI) / 180;
     const a2 = (330 * Math.PI) / 180;
     const x1 = cx + Math.cos(a1) * r;
@@ -222,7 +223,7 @@ export function Hero() {
               >
                 <text
                   fill="rgba(52,211,153,0.82)"
-                  fontSize={15}
+                  fontSize={14}
                   fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                   letterSpacing="0.12em"
                 >
@@ -233,7 +234,7 @@ export function Hero() {
 
                 <circle
                   cx={sphereSize / 2}
-                  cy={sphereSize * 0.07}
+                  cy={sphereSize / 2 - sphereSize * ORBIT_RADIUS_FACTOR}
                   r={3.6}
                   fill="rgba(52,211,153,0.95)"
                 />
