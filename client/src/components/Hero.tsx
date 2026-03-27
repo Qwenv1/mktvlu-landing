@@ -6,7 +6,7 @@ import ParticleSphere from "@/components/ParticleSphere";
 
 const INTRO_DURATION_MS = 2300;
 const ORBIT_LOOP_SECONDS = 11;
-const ORBIT_RADIUS_FACTOR = 0.39;
+const ORBIT_RADIUS_FACTOR = 0.35;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -223,9 +223,9 @@ export function Hero() {
               >
                 <text
                   fill="rgba(52,211,153,0.82)"
-                  fontSize={14}
+                  fontSize={13}
                   fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                  letterSpacing="0.12em"
+                  letterSpacing="0.1em"
                 >
                   <textPath href={`#${orbitPathId}`} startOffset="0%" textAnchor="start">
                     {ARC_TEXT.slice(0, arcChars)}
@@ -235,7 +235,7 @@ export function Hero() {
                 <circle
                   cx={sphereSize / 2}
                   cy={sphereSize / 2 - sphereSize * ORBIT_RADIUS_FACTOR}
-                  r={3.6}
+                  r={3.2}
                   fill="rgba(52,211,153,0.95)"
                 />
               </motion.g>
