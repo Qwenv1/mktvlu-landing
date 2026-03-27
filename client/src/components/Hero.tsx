@@ -193,56 +193,22 @@ export function Hero() {
               <path id={topArcPathId} d={topArcPath} fill="none" />
             </defs>
 
-            <text
-              fill="rgba(52,211,153,0.82)"
-              fontSize={sphereSize < 400 ? 12 : 15}
-              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-              letterSpacing="0.12em"
-            >
-              {isMobile ? (
+            {isMobile ? (
+              <text
+                fill="rgba(52,211,153,0.82)"
+                fontSize={12}
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                letterSpacing="0.12em"
+              >
                 <textPath href={`#${topArcPathId}`} startOffset="50%" textAnchor="middle">
                   {ARC_TEXT.slice(0, arcChars)}
                 </textPath>
-              ) : (
-                <motion.textPath
-                  href={`#${orbitPathId}`}
-                  textAnchor="middle"
-                  initial={prefersReducedMotion ? false : { startOffset: "50%" }}
-                  animate={{ startOffset: "150%" }}
-                  transition={{
-                    delay: withDelay(0.92),
-                    duration: prefersReducedMotion ? 0.2 : 11,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  startOffset="50%"
-                >
-                  {ARC_TEXT.slice(0, arcChars)}
-                </motion.textPath>
-              )}
-            </text>
-
-            {!isMobile && (
-              <motion.circle
-                r={sphereSize < 400 ? 2.6 : 3.6}
-                fill="rgba(52,211,153,0.95)"
-                initial={prefersReducedMotion ? false : { cx: sphereSize / 2, cy: sphereSize * 0.07 }}
-                animate={{
-                  cx: [
-                    sphereSize / 2,
-                    sphereSize * 0.93,
-                    sphereSize / 2,
-                    sphereSize * 0.07,
-                    sphereSize / 2,
-                  ],
-                  cy: [
-                    sphereSize * 0.07,
-                    sphereSize / 2,
-                    sphereSize * 0.93,
-                    sphereSize / 2,
-                    sphereSize * 0.07,
-                  ],
-                }}
+              </text>
+            ) : (
+              <motion.g
+                style={{ transformOrigin: `${sphereSize / 2}px ${sphereSize / 2}px` }}
+                initial={prefersReducedMotion ? false : { rotate: 0 }}
+                animate={{ rotate: 360 }}
                 transition={{
                   delay: withDelay(0.92),
                   duration: prefersReducedMotion ? 0.2 : 11,
@@ -250,7 +216,24 @@ export function Hero() {
                   ease: "linear",
                 }}
               >
-              </motion.circle>
+                <text
+                  fill="rgba(52,211,153,0.82)"
+                  fontSize={sphereSize < 400 ? 12 : 15}
+                  fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                  letterSpacing="0.12em"
+                >
+                  <textPath href={`#${orbitPathId}`} startOffset="50%" textAnchor="middle">
+                    {ARC_TEXT.slice(0, arcChars)}
+                  </textPath>
+                </text>
+
+                <circle
+                  cx={sphereSize / 2}
+                  cy={sphereSize * 0.07}
+                  r={sphereSize < 400 ? 2.6 : 3.6}
+                  fill="rgba(52,211,153,0.95)"
+                />
+              </motion.g>
             )}
           </motion.svg>
 
