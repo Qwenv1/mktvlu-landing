@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import ParticleSphere from "@/components/ParticleSphere";
 
 const INTRO_DURATION_MS = 2300;
+const ORBIT_LOOP_SECONDS = 18;
 const ARC_TEXT = "See through the market noise. Find the real price - not the listed one.";
 
 function CornerSet({ colorClass }: { colorClass: string }) {
@@ -90,9 +91,9 @@ export function Hero() {
     const cx = sphereSize / 2;
     const cy = sphereSize / 2;
     const orbitRadius = sphereSize * 0.43;
-    const bottomY = cy + orbitRadius;
-    // Place the path seam at the bottom to avoid a visible reset at the top.
-    return `M ${cx} ${bottomY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${bottomY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${bottomY}`;
+    const topY = cy - orbitRadius;
+    // Full clockwise orbit so text can revolve around the globe perimeter.
+    return `M ${cx} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx - 0.01} ${topY} A ${orbitRadius} ${orbitRadius} 0 1 1 ${cx} ${topY}`;
   }, [sphereSize]);
 
   const topArcPath = useMemo(() => {
@@ -211,7 +212,7 @@ export function Hero() {
                 animate={{ rotate: 360 }}
                 transition={{
                   delay: withDelay(0.92),
-                  duration: prefersReducedMotion ? 0.2 : 11,
+                  duration: prefersReducedMotion ? 0.2 : ORBIT_LOOP_SECONDS,
                   repeat: Infinity,
                   ease: "linear",
                 }}
@@ -222,7 +223,7 @@ export function Hero() {
                   fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
                   letterSpacing="0.12em"
                 >
-                  <textPath href={`#${orbitPathId}`} startOffset="50%" textAnchor="middle">
+                  <textPath href={`#${topArcPathId}`} startOffset="50%" textAnchor="middle">
                     {ARC_TEXT.slice(0, arcChars)}
                   </textPath>
                 </text>
