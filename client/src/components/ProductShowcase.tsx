@@ -39,8 +39,8 @@ export function ProductShowcase({ example, onSelect }: { example: ProductExample
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div ref={report} className="valuation-report" aria-label="Interactive example valuation">
-              <div className="report-header"><span className="mini-wordmark">MKT<span>VLU</span></span><span className="sample-label">Interactive example</span></div>
+              <div ref={report} className="valuation-report" aria-label="Interactive example valuation">
+              <div className="report-header"><span className="mini-wordmark">mkt<span>·vlu</span></span><span className="sample-label">Interactive example</span></div>
               <p className="report-eyebrow">Market reference price</p>
               <div className="report-price-line">
                 <p className="report-price" aria-live="polite"><AnimatedValue value={price} format={money} /><span>CAD</span></p>

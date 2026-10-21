@@ -59,7 +59,7 @@ export function WorkflowShowcase() {
             <AnimatePresence>
               {showBrandIntro && <motion.div className="workflow-brand-intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.025 }} transition={{ duration: 0.55 }} aria-hidden="true">
                 <motion.img src="/icon-180.png" alt="" initial={{ opacity: 0, scale: 0.78, rotate: -8 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} />
-                <motion.div className="workflow-brand-wordmark" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.65, ease: "easeOut" }}>MKT<span>·</span>VLU</motion.div>
+                <motion.div className="workflow-brand-wordmark" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.65, ease: "easeOut" }}>mkt<span>·</span>vlu</motion.div>
                 <motion.div className="workflow-brand-line" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.75, ease: "easeOut" }}>Bridging the <em>information gap.</em></motion.div>
               </motion.div>}
             </AnimatePresence>

@@ -23,7 +23,7 @@ function BrandMark() {
         initial={reduced ? false : { opacity: 0, x: -7 }}
         animate={reduced ? undefined : { opacity: 1, x: 0 }}
         transition={{ duration: 0.65, delay: 0.16, ease: editorialEase }}
-      >MKT<span>·</span>VLU</motion.span>
+      >mkt<span>·</span>vlu</motion.span>
     </span>
   );
 }

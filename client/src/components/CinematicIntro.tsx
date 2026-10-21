@@ -74,7 +74,7 @@ export function CinematicIntro() {
             <div className="phone-shell">
               <div className="phone-screen">
                 <div className="phone-island" />
-                <div className="phone-app-bar"><span className="phone-wordmark">MKT<span>VLU</span></span><span>⋮</span></div>
+                <div className="phone-app-bar"><span className="phone-wordmark">mkt<span>·vlu</span></span><span>⋮</span></div>
                 <AnimatePresence mode="wait" initial={false}>
                   {step === 0 && <motion.div className="phone-state phone-scan" key="scan" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .35 }}>
                     <div className="phone-screen-label">SCAN / 001</div>
