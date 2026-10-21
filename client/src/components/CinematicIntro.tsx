@@ -50,9 +50,9 @@ export function CinematicIntro() {
         <motion.div className="cinematic-veil" style={reduced ? undefined : { opacity: veilOpacity }} aria-hidden="true" />
         <div className="page-width cinematic-content">
           <motion.div className="cinematic-headline" style={reduced ? undefined : { opacity: headlineOpacity, y: headlineY }}>
-            <p className="eyebrow">A better perspective on secondhand.</p>
-            <h1>Good things.<br /><em>The right price.</em></h1>
-            <p className="cinematic-lede">Every listing has a price. Few have an answer. MKTVLU identifies the item in front of you, compares its exact configuration and condition with relevant resale evidence, and gives buyers and sellers a clearer reference.</p>
+            <p className="eyebrow">The missing reference for secondhand.</p>
+            <h1>Is this the<br /><em>right price?</em></h1>
+            <p className="cinematic-lede">A listing price is only a guess until you compare the exact model, configuration, condition, and market evidence. MKTVLU gives buyers and sellers a clearer reference before they make a move.</p>
             <div className="cinematic-actions">
               <a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Value an item <ArrowUpRight size={17} /></a>
               <button className="action-text" onClick={() => scrollToSection("product")}>See the valuation <ArrowDown size={16} /></button>
