@@ -10,5 +10,8 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
 
 export function scrollToSection(id: string) {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  document.getElementById(id)?.scrollIntoView({ behavior: reduced ? "instant" : "smooth", block: "start" });
+  const target = document.getElementById(id);
+  if (!target) return;
+  const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - 82);
+  window.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
 }

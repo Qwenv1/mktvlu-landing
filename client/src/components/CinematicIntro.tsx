@@ -9,7 +9,7 @@ const golf = examples[0];
 const steps = [
   { label: "Capture", title: "Start with what you see.", body: "Point your camera at it. MKTVLU maps the item and works out the details that matter." },
   { label: "Match", title: "The market adds context.", body: "Comparable listings, condition, and location refine the picture and filter the outliers." },
-  { label: "Value", title: "A price with perspective.", body: "A reference price, a realistic range, and the confidence behind it. Ready for your next move." },
+  { label: "Value", title: "A grounded market reference.", body: "A reference price, a realistic range, and the evidence behind it. Ready for your next move." },
 ];
 
 export function CinematicIntro() {
@@ -50,12 +50,12 @@ export function CinematicIntro() {
         <motion.div className="cinematic-veil" style={reduced ? undefined : { opacity: veilOpacity }} aria-hidden="true" />
         <div className="page-width cinematic-content">
           <motion.div className="cinematic-headline" style={reduced ? undefined : { opacity: headlineOpacity, y: headlineY }}>
-            <p className="eyebrow">The missing reference for secondhand.</p>
-            <h1>Every listing has a price.<br /><em>Few have an answer.</em></h1>
-            <p className="cinematic-lede">Buyers and sellers are often comparing guesses. MKTVLU matches an item’s exact configuration and condition to relevant market evidence, so you can see what it’s really worth.</p>
+            <p className="eyebrow">A better perspective on secondhand.</p>
+            <h1>Good things.<br /><em>The right price.</em></h1>
+            <p className="cinematic-lede">Every listing has a price. Few have an answer. MKTVLU identifies the item in front of you, compares its exact configuration and condition with relevant resale evidence, and gives buyers and sellers a clearer reference.</p>
             <div className="cinematic-actions">
-              <a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Check a price <ArrowUpRight size={17} /></a>
-              <button className="action-text" onClick={() => scrollToSection("product")}>See how it works <ArrowDown size={16} /></button>
+              <a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Value an item <ArrowUpRight size={17} /></a>
+              <button className="action-text" onClick={() => scrollToSection("product")}>See the valuation <ArrowDown size={16} /></button>
             </div>
           </motion.div>
 
@@ -95,8 +95,8 @@ export function CinematicIntro() {
 
           <motion.div className="cinematic-report" style={reduced ? undefined : { opacity: reportOpacity, scale: reportScale, y: reportY }}>
             <div className="report-card-header"><span>MARKET REPORT</span><span>ILLUSTRATIVE · CAD</span></div>
-            <div className="report-card-grid"><div><p className="report-card-kicker">TaylorMade P770 / P7MB iron set</p><h2>A price with perspective.</h2><p>4–PW · Steel shafts · Right-handed · Good condition</p><span className="report-card-meta">24 comparable listings · 2 outliers removed · Updated today</span></div><div className="report-card-value"><span>Market reference</span><strong><AnimatedValue value={999} format={money} /></strong><b>● 88% confidence</b><div className="report-card-range"><span>{money(890)}</span><div><i /></div><span>{money(1120)}</span></div></div></div>
-            <div className="report-card-actions"><button className="action-text" onClick={() => scrollToSection("product")}>Open the full report <ArrowDown size={14} /></button><a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Value your own item <ArrowUpRight size={15} /></a></div>
+            <div className="report-card-grid"><div><p className="report-card-kicker">TaylorMade P770 / P7MB iron set</p><h2>A grounded market reference.</h2><p>4–PW · Steel shafts · Right-handed · Good condition</p><span className="report-card-meta">24 comparable listings · 2 outliers removed · Updated today</span></div><div className="report-card-value"><span>Market reference</span><strong><AnimatedValue value={999} format={money} /></strong><b>● 88% confidence</b><div className="report-card-range"><span>{money(890)}</span><div><i /></div><span>{money(1120)}</span></div></div></div>
+            <div className="report-card-actions"><button className="action-text" onClick={() => scrollToSection("product")}>Open the full report <ArrowDown size={14} /></button><a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Value an item <ArrowUpRight size={15} /></a></div>
           </motion.div>
         </div>
       </div>

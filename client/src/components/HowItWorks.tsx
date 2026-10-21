@@ -7,7 +7,7 @@ import { money } from "@/lib/examples";
 
 const chapters = [
   { number: "01", title: "Start with what you see.", text: "Take a photo or describe the item. The details that matter — brand, model, and configuration — become the starting point." },
-  { number: "02", title: "Let the market add context.", text: "Comparable listings help build the picture. Condition, location, and available evidence refine the result." },
+  { number: "02", title: "Compare the right peers.", text: "Comparable listings help build the picture. Condition, location, and available evidence refine the result." },
   { number: "03", title: "Make your next move.", text: "Use the reference price and range to judge an asking price, set a listing, or begin a conversation." },
 ];
 
@@ -41,7 +41,7 @@ export function HowItWorks() {
               </div>
             </div>
           </div>
-          <div className="process-chapters">{chapters.map((chapter,index)=><Reveal className={"process-chapter " + (stage === index ? "current" : "")} key={chapter.number}><span className="chapter-number">{chapter.number}</span><h3>{chapter.title}</h3><p>{chapter.text}</p>{index === 2 && <a className="action-text" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Try it with your own item <ArrowUpRight size={16} /></a>}</Reveal>)}</div>
+          <div className="process-chapters">{chapters.map((chapter,index)=><Reveal className={"process-chapter " + (stage === index ? "current" : "")} key={chapter.number}><span className="chapter-number">{chapter.number}</span><h3>{chapter.title}</h3><p>{chapter.text}</p>{index === 2 && <a className="action-text" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Value an item <ArrowUpRight size={16} /></a>}</Reveal>)}</div>
         </div>
       </div>
     </section>

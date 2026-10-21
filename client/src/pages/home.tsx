@@ -22,11 +22,11 @@ export default function Home() {
         <ReadingProgress />
         <main id="main-content">
           <CinematicIntro />
-          <ExampleGallery onSelect={setExample} />
           <ProductShowcase example={example} onSelect={setExample} />
-          <WorkflowShowcase />
           <HowItWorks />
+          <WorkflowShowcase />
           <Technology />
+          <ExampleGallery onSelect={setExample} />
           <CTA />
         </main>
         <Footer />
