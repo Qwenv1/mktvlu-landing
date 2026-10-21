@@ -125,7 +125,7 @@
 .workflow-layout { display: grid; grid-template-columns: 1.5fr .78fr; align-items: center; gap: 92px; }
 .workflow-film { position: relative; overflow: hidden; aspect-ratio: 16 / 10; border: 1px solid #ffffff19; border-radius: 22px; background: #090b09; box-shadow: 0 25px 80px #0004; }
 .workflow-film video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.workflow-brand-intro { position: absolute; z-index: 2; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: radial-gradient(circle at 50% 43%, #0b3a2e9c, #05070aeF 50%, #020307 100%); pointer-events: none; }
+.workflow-brand-intro { position: absolute; z-index: 2; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: radial-gradient(circle at 50% 43%, #0b3a2e 0%, #05070a 52%, #020307 100%); pointer-events: none; }
 .workflow-brand-intro::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 28%, #d7f6e622 50%, transparent 72%); transform: translateX(-110%); animation: brand-intro-sweep 2.2s .2s ease-out forwards; }
 .workflow-brand-intro img { position: relative; z-index: 1; width: clamp(58px, 8vw, 108px); height: auto; border-radius: 20%; box-shadow: 0 0 44px #2de1a24a; }
 .workflow-brand-wordmark { position: relative; z-index: 1; margin-top: 12px; color: #f5f7f1; font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 4.2vw, 56px); letter-spacing: -.04em; }
