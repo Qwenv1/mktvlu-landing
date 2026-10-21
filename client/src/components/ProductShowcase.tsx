@@ -1,191 +1,74 @@
-import { motion } from "framer-motion";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { fadeUp, stagger } from "@/lib/animations";
-import { PhoneFrame } from "@/components/ui/PhoneFrame";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { VLUBadge } from "@/components/ui/VLUBadge";
-import { ArrowLeft, Share, MoreHorizontal, ShoppingCart, Info, TrendingUp } from "lucide-react";
+import { lazy, Suspense, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Check, ChevronDown } from "lucide-react";
+import { examples, money, type ProductExample } from "@/lib/examples";
+import { Reveal, editorialEase } from "./Reveal";
+import { AnimatedValue, DrawLine, TextReveal } from "./SiteMotion";
+const PriceChart = lazy(() => import("./PriceChart").then(module => ({ default: module.PriceChart })));
 
-export function ProductShowcase() {
+type Condition = "Good" | "Fair" | "Poor";
+const factors: Record<Condition, number> = { Good: 1, Fair: 0.85, Poor: 0.67 };
+
+export function ProductShowcase({ example, onSelect }: { example: ProductExample; onSelect: (example: ProductExample) => void }) {
+  const [condition, setCondition] = useState<Condition>("Good");
+  const [sourcesOpen, setSourcesOpen] = useState(false);
+  const reduced = useReducedMotion();
+  const report = useRef<HTMLDivElement>(null);
+  const showChart = useInView(report, { once: true, margin: "200px" });
+  const factor = factors[condition];
+  const price = Math.round(example.price * factor);
   return (
-    <section id="product" className="py-20 md:py-32 px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col items-center text-center mb-20">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-        >
-          <SectionLabel>THE PRODUCT</SectionLabel>
-        </motion.div>
-        
-        <motion.h2 
-          className="font-serif italic text-4xl md:text-5xl mb-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-        >
-          Everything you need to know. One scan.
-        </motion.h2>
-      </div>
-
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-24">
-        {/* Left Column - Phone Mockup */}
-        <motion.div
-          className="relative"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeUp}
-          animate={{
-            y: [0, -6, 0],
-            transition: {
-              y: {
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }
-            }
-          }}
-        >
-          {/* Glow behind phone */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[500px] bg-mint/5 blur-[80px] rounded-full pointer-events-none" />
-          
-          <PhoneFrame>
-            {/* Mock App UI */}
-            <div className="flex flex-col h-full bg-black p-4 pt-12 text-white">
-              {/* Header */}
-              <div className="flex justify-between items-center mb-6">
-                <ArrowLeft size={20} className="text-white/60" />
-                <div className="flex gap-4">
-                  <Share size={20} className="text-white/60" />
-                  <MoreHorizontal size={20} className="text-white/60" />
-                </div>
-              </div>
-
-              {/* Product Info */}
-              <div className="mb-6">
-                <div className="flex justify-between items-start mb-2">
-                  <h1 className="text-xl font-semibold leading-tight w-2/3">iPhone 15 Pro Max</h1>
-                  <VLUBadge size="sm" />
-                </div>
-                <p className="text-sm text-white/40">256GB · Natural Titanium · Good</p>
-              </div>
-
-              {/* MRP Card */}
-              <div className="bg-white/5 rounded-2xl p-4 border border-white/10 mb-4">
-                <div className="flex justify-between items-baseline mb-1">
-                  <span className="text-xs text-white/40 uppercase tracking-wider">Market Reference Price</span>
-                  <Info size={12} className="text-white/20" />
-                </div>
-                <div className="text-4xl font-serif italic text-mint mb-3">$987</div>
-                
-                {/* Mini Chart */}
-                <div className="h-12 w-full flex items-end gap-1 mb-3 opacity-80">
-                  {/* Simplified SVG chart rep */}
-                  <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none">
-                    <path d="M0 35 L10 32 L20 34 L30 25 L40 28 L50 20 L60 22 L70 15 L80 18 L90 10 L100 12" fill="none" stroke="#34D399" strokeWidth="2" />
-                    <path d="M0 35 L100 35" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 2" />
-                  </svg>
-                </div>
-                
-                <div className="flex justify-between text-[10px] text-white/40">
-                  <span>Low: $820</span>
-                  <span>High: $1,140</span>
-                </div>
-              </div>
-
-              {/* Condition */}
-              <div className="flex gap-2 mb-6">
-                <span className="px-3 py-1.5 rounded-lg bg-mint/10 text-mint text-xs font-medium border border-mint/20">Good</span>
-                <span className="px-3 py-1.5 rounded-lg bg-white/5 text-white/40 text-xs border border-white/5">Fair</span>
-                <span className="px-3 py-1.5 rounded-lg bg-white/5 text-white/40 text-xs border border-white/5">Poor</span>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-3 mb-auto">
-                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-                  <div className="text-[10px] text-white/40 uppercase mb-1">Listings</div>
-                  <div className="text-lg font-medium">42</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-3 border border-white/5">
-                  <div className="text-[10px] text-white/40 uppercase mb-1">Confidence</div>
-                  <div className="text-lg font-medium text-mint">94%</div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <button className="py-3 rounded-full bg-white/10 text-white font-medium text-sm">Sell</button>
-                <button className="py-3 rounded-full bg-mint text-black font-medium text-sm">Buy</button>
-              </div>
+    <section id="product" className="product-section section-space">
+      <div className="page-width">
+        <Reveal className="section-heading"><div><p className="eyebrow">The product, up close</p><h2><TextReveal lines={["A number is useful.", "The context is everything."]} mutedLast /></h2></div><p>A reference price, a realistic range, and the evidence behind it. Together, they give you a better place to start.</p></Reveal>
+        <Reveal>
+          <div className="product-switcher" role="group" aria-label="Choose an example product">
+            {examples.map(item => <button key={item.id} onClick={() => onSelect(item)} aria-pressed={example.id === item.id} className={example.id === item.id ? "active" : ""}>
+              {example.id === item.id && <motion.span className="selection-highlight" layoutId="product-selection" transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 300, damping: 30 }} />}
+              <span className="selection-label">{item.category}</span>
+            </button>)}
+          </div>
+          <div className="product-display">
+            <div className="product-visual">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.img key={example.id} src={example.image} alt={example.alt} width={700} height={900} loading="lazy" initial={{ opacity: reduced ? 1 : 0, scale: reduced ? 1 : 1.025 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: reduced ? 1 : 0 }} transition={{ duration: 0.35, ease: editorialEase }} style={{ objectPosition: example.position }} />
+              </AnimatePresence>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div key={example.id} className="product-image-caption" initial={reduced ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -8 }} transition={{ duration: 0.35, ease: editorialEase }}>
+                  <span>{example.category} / Market perspective</span><h3>{example.name}</h3><p>{example.detail}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
-          </PhoneFrame>
-        </motion.div>
-
-        {/* Right Column - Exploded Breakdown */}
-        <motion.div 
-          className="flex flex-col gap-4 max-w-md w-full"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={stagger}
-        >
-          {[
-            {
-              id: "01",
-              title: "Market Reference Price",
-              desc: "The statistically filtered average across all marketplaces. Your single source of truth.",
-              visual: <span className="text-mint font-serif italic text-lg">$987</span>
-            },
-            {
-              id: "02",
-              title: "Price Range & Chart",
-              desc: "Floor to ceiling range with a 30-day price trend showing market direction.",
-              visual: <TrendingUp size={18} className="text-white/60" />
-            },
-            {
-              id: "03",
-              title: "Condition Assessment",
-              desc: "AI-detected condition with price adjustments. Good, Fair, or Poor — each with its own MRP.",
-              visual: <div className="flex gap-1"><span className="w-2 h-2 rounded-full bg-mint" /><span className="w-2 h-2 rounded-full bg-yellow-500/50" /><span className="w-2 h-2 rounded-full bg-white/20" /></div>
-            },
-            {
-              id: "04",
-              title: "Evidence & Sources",
-              desc: "See exactly how many listings were analyzed and from which platforms.",
-              visual: <span className="text-[10px] text-white/60">42 sources</span>
-            },
-            {
-              id: "05",
-              title: "Price DNA",
-              desc: "Multi-axis radar scoring confidence, stability, liquidity, demand, and retention.",
-              visual: <div className="w-5 h-5 border border-white/20 rotate-45" />
-            },
-            {
-              id: "06",
-              title: "VLU Certified",
-              desc: "When the listing price falls within the validated MRP range, it earns the VLU Certified stamp.",
-              visual: <VLUBadge size="sm" />
-            }
-          ].map((item, i) => (
-            <GlassCard key={i} className="p-4 flex gap-4 items-center group hover:bg-white/5 transition-colors" hoverEffect={false}>
-              <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-mono text-white/40 bg-black/20">
-                {item.id}
+            <div ref={report} className="valuation-report" aria-label="Interactive example valuation">
+              <div className="report-header"><span className="mini-wordmark">MKT<span>VLU</span></span><span className="sample-label">Interactive example</span></div>
+              <p className="report-eyebrow">Market reference price</p>
+              <div className="report-price-line">
+                <p className="report-price" aria-live="polite"><AnimatedValue value={price} format={money} /><span>CAD</span></p>
+                <motion.span className="confidence-chip" initial={reduced ? false : { opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.25, duration: 0.5 }}><Check size={13} /><AnimatedValue value={example.confidence} />% confidence</motion.span>
               </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                  <h3 className="text-sm font-semibold text-white">{item.title}</h3>
-                  {item.visual}
-                </div>
-                <p className="text-xs text-white/50 leading-relaxed line-clamp-2">
-                  {item.desc}
-                </p>
-              </div>
-            </GlassCard>
-          ))}
-        </motion.div>
+              <Suspense fallback={<div className="price-chart" />}>
+                {showChart ? <PriceChart key={example.id} price={price} /> : <div className="price-chart" />}
+              </Suspense>
+              <div className="chart-caption"><span>30-day example history</span><span>Market reference</span></div>
+              <div className="report-range">{[["Lower range", Math.round(example.low * factor)], ["Upper range", Math.round(example.high * factor)]].map(([label, value], index) =>
+                <motion.div key={label} initial={reduced ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: index * 0.12, ease: editorialEase }}><span>{label}</span><strong><AnimatedValue value={Number(value)} format={money} /></strong></motion.div>
+              )}</div>
+              <div className="report-verdict"><div><span>Market read</span><strong>{example.asking > price ? "Above the reference" : "Within the reference range"}</strong></div><small>Asking {money(example.asking)} · Reference {money(price)}</small></div>
+              <div className="condition-row"><span>Condition</span><div role="group" aria-label="Example item condition">{(["Good", "Fair", "Poor"] as Condition[]).map(item => <button key={item} onClick={() => setCondition(item)} aria-pressed={condition === item} className={condition === item ? "active" : ""}>
+                {condition === item && <motion.span className="selection-highlight condition-highlight" layoutId="condition-selection" transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 350, damping: 30 }} />}
+                <span className="selection-label">{item}</span>
+              </button>)}</div></div>
+              <div className="source-row"><div><strong><AnimatedValue value={example.listings} /></strong><span>Comparable listings</span></div><button onClick={() => setSourcesOpen(!sourcesOpen)} aria-expanded={sourcesOpen} aria-controls="example-evidence">View evidence <ChevronDown size={14} className={sourcesOpen ? "rotate-180" : ""} /></button></div>
+              <AnimatePresence initial={false}>{sourcesOpen && <motion.div id="example-evidence" className="evidence-detail" initial={{ height: reduced ? "auto" : 0, opacity: reduced ? 1 : 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: reduced ? "auto" : 0, opacity: reduced ? 1 : 0 }} transition={{ duration: 0.3 }}><div className="report-detail-grid"><div><span>Trend</span><strong>Prices holding steady</strong><small>30 days · {money(Math.max(0, price - 39))} → {money(price)}</small></div><div><span>Evidence</span><strong>{example.listings} comparable listings</strong><small>Configuration matched · outliers filtered</small></div><div className="report-factor-list"><span>Price factors</span><p><b>Up</b> configuration match</p><p><b>Down</b> seasonal timing</p></div><p className="report-illustrative-note">Illustrative data. The app shows the available evidence for your item.</p></div></motion.div>}</AnimatePresence>
+              <a className="report-action" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Find the value of your item <ArrowUpRight size={16} /></a>
+            </div>
+          </div>
+        </Reveal>
+        <div className="product-benefits">{[
+          ["01", "A price with perspective.", "One reference to help you compare an asking price or plan your own listing."],
+          ["02", "The details make a difference.", "Model, configuration, condition, and location all influence an item's value."],
+          ["03", "Evidence you can inspect.", "See the range and confidence instead of relying on a number without context."],
+        ].map(([number,title,copy],index)=><Reveal key={number} delay={index*0.12}><DrawLine delay={index*0.12} /><span className="benefit-number">{number}</span><h3>{title}</h3><p>{copy}</p></Reveal>)}</div>
       </div>
     </section>
   );

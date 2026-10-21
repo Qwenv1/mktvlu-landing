@@ -50,7 +50,7 @@ export function Roadmap() {
             viewport={{ once: true }}
             variants={fadeUp}
         >
-          The Bloomberg Terminal for physical goods.
+          A reference layer for the resale economy.
         </motion.h2>
         <motion.p 
             className="text-white/60 max-w-2xl text-lg"
@@ -59,7 +59,7 @@ export function Roadmap() {
             viewport={{ once: true }}
             variants={fadeUp}
         >
-          MKTVLU is building the independent price reference layer for the global resale economy.
+          Start with a better answer for one product. Build toward a more transparent market for everyone.
         </motion.p>
       </div>
 

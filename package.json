@@ -9,7 +9,11 @@
     "build": "tsx script/build.ts",
     "start": "NODE_ENV=production node dist/index.cjs",
     "check": "tsc",
+    "check:landing": "tsc --project tsconfig.landing.json",
     "db:push": "drizzle-kit push"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

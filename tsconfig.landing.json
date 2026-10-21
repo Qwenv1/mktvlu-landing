@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["client/src/main.tsx", "vite.config.ts"],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/typescript/landing.tsbuildinfo"
+  }
+}

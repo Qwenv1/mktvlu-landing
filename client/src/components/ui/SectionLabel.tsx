@@ -7,7 +7,7 @@ interface SectionLabelProps {
 
 export function SectionLabel({ children, className }: SectionLabelProps) {
   return (
-    <div className={cn("inline-flex items-center px-3 py-1 rounded-full border border-mint/30 bg-mint/5 text-[11px] font-semibold tracking-[3px] uppercase text-mint backdrop-blur-sm mb-6", className)}>
+    <div className={cn("mb-6 inline-flex items-center border-l-2 border-mint pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/45", className)}>
       {children}
     </div>
   );

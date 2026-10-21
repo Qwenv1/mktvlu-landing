@@ -1,123 +1,63 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { PricingModal } from "@/components/PricingModal";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { PricingModal } from "./PricingModal";
+import { editorialEase, scrollToSection } from "./Reveal";
+
+function BrandMark() {
+  return (
+    <span className="brand-lockup" aria-hidden="true">
+      <span className="brand-mark">
+        <svg viewBox="0 0 44 44" role="presentation">
+          <path d="M10 16V10h6M28 10h6v6M34 28v6h-6M16 34h-6v-6" />
+          <ellipse cx="22" cy="22" rx="12.5" ry="5.5" transform="rotate(-31 22 22)" />
+          <ellipse cx="22" cy="22" rx="12.5" ry="5.5" transform="rotate(31 22 22)" />
+          <circle cx="22" cy="22" r="2.1" />
+        </svg>
+      </span>
+      <span className="brand-name"><strong>MKT</strong><span>VLU</span><i>.</i></span>
+    </span>
+  );
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pricingOpen, setPricingOpen] = useState(false);
-
+  const reduced = useReducedMotion();
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setMobileMenuOpen(false);
-  };
-
-  const navLinks = [
-    { name: "Product", action: () => scrollTo("product") },
-    { name: "Technology", action: () => scrollTo("technology") },
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+        document.getElementById("menu-toggle")?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
+  const links = [
+    { name: "Examples", action: () => scrollToSection("examples") },
+    { name: "The product", action: () => scrollToSection("product") },
+    { name: "How it works", action: () => scrollToSection("how-it-works") },
     { name: "Pricing", action: () => setPricingOpen(true) },
   ];
-
   return (
     <>
-      <nav
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          scrolled ? "glass-nav py-4" : "bg-transparent py-6"
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          {/* Logo */}
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-            className="flex items-center gap-3 group"
-          >
-            <img 
-              src="/icon-180.png" 
-              alt="MKTVLU" 
-              width={28} 
-              height={28} 
-              className="opacity-85 transition-opacity group-hover:opacity-100" 
-            />
-            <span className="font-bold tracking-[1px] text-white/75 group-hover:text-white transition-colors text-[18px]">
-              MKTVLU
-            </span>
-          </button>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={link.action}
-                className="text-[13px] font-medium text-white/60 hover:text-white transition-all duration-150"
-              >
-                {link.name}
-              </button>
-            ))}
-            <Button 
-              asChild
-              className="rounded-full bg-mint hover:bg-mint/90 text-black font-medium h-9 px-5 text-[13px]"
-            >
-              <a href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">
-                Launch App
-              </a>
-            </Button>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-white/80 hover:text-white"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+      <nav className={"editorial-nav " + (scrolled || mobileMenuOpen ? "is-scrolled" : "")} aria-label="Main navigation">
+        <div className="page-width nav-inner">
+          <button className="wordmark" onClick={() => { scrollToSection("top"); setMobileMenuOpen(false); }} aria-label="MKTVLU home"><BrandMark /></button>
+          <div className="nav-links">{links.map(link => <button key={link.name} onClick={link.action}>{link.name}</button>)}<a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Open app <ArrowUpRight size={14} /></a></div>
+          <button id="menu-toggle" className="menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}>{mobileMenuOpen ? <X size={21} /> : <Menu size={21} />}</button>
         </div>
       </nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-black pt-24 px-6 md:hidden"
-          >
-            <div className="flex flex-col gap-6 text-center">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={link.action}
-                  className="text-2xl font-serif italic text-white/80 hover:text-white"
-                >
-                  {link.name}
-                </button>
-              ))}
-              <Button 
-                asChild
-                className="rounded-full bg-mint hover:bg-mint/90 text-black font-medium h-12 text-lg mt-4 w-full"
-              >
-                <a href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">
-                  Launch App
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+      <AnimatePresence>{mobileMenuOpen && <motion.div id="mobile-navigation" className="mobile-navigation" initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -8 }} transition={{ duration: 0.25, ease: editorialEase }}><div>{links.map(link => <button key={link.name} onClick={() => { link.action(); setMobileMenuOpen(false); }}>{link.name}</button>)}<a className="action-primary" href="https://mktvlu.co" target="_blank" rel="noopener noreferrer">Open app <ArrowUpRight size={15} /></a></div></motion.div>}</AnimatePresence>
       <PricingModal open={pricingOpen} onClose={() => setPricingOpen(false)} />
     </>
   );

@@ -1,112 +1,29 @@
-import { motion } from "framer-motion";
-import { SectionLabel } from "@/components/ui/SectionLabel";
-import { fadeUp, stagger, flowDotAnimation } from "@/lib/animations";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { Camera, Brain, Search, Filter, Database } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal } from "./Reveal";
+import { DrawLine, MotionAccordion, TextReveal } from "./SiteMotion";
+
+const questions = [
+  ["What is a Market Reference Price?", "An estimate built from comparable market evidence. It gives you a starting point for buying or selling, alongside a range and confidence score. It is not a guaranteed sale price."],
+  ["Why does condition change the price?", "Two items with the same model can have very different values. Wear, configuration, accessories, and location affect the comparison. Confirm the item details in the app for a more useful result."],
+  ["Are these example prices live?", "The examples on this page are illustrative, in CAD, and designed to show how the result works. Use the app to get a valuation for your own item from the evidence available at the time."],
+  ["Do I need an account?", "You can try the current mobile web experience without creating an account. Open MKTVLU, take a photo or describe an item, and explore the result."],
+];
 
 export function Technology() {
   return (
-    <section id="technology" className="py-20 md:py-32 px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col items-center text-center mb-20">
-        <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-        >
-            <SectionLabel>UNDER THE HOOD</SectionLabel>
-        </motion.div>
-        <motion.h2 
-            className="font-serif italic text-4xl md:text-5xl mb-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-        >
-          Intelligence layers, not just data.
-        </motion.h2>
-        <motion.p 
-            className="text-white/60 max-w-2xl text-lg"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-        >
-          MKTVLU's pricing engine combines computer vision, real-time web aggregation, and statistical analysis into a single API call.
-        </motion.p>
+    <section id="technology" className="method-section section-space">
+      <div className="page-width">
+        <Reveal className="method-intro"><p className="eyebrow">The thinking behind the price</p><h2><TextReveal lines={["Good decisions", "start with good context."]} /></h2><p>Asking prices tell only part of the story. MKTVLU brings the useful details together so you can see a more complete picture.</p></Reveal>
+        <div className="method-principles">{[
+          ["01 / Relevance", "Compare like with like.", "Start with the right model and configuration. A closer match makes for a more meaningful comparison."],
+          ["02 / Perspective", "Look beyond one listing.", "Consider comparable market evidence and filter unusual prices that could distort the result."],
+          ["03 / Clarity", "Show the uncertainty.", "A useful estimate comes with a range and confidence. See how much evidence supports your next move."],
+        ].map(([label,title,text],index)=><Reveal key={label} delay={index*0.12}><DrawLine delay={index*0.14} /><p className="principle-label">{label}</p><h3>{title}</h3><p>{text}</p></Reveal>)}</div>
+        <div className="faq-layout">
+          <Reveal><p className="eyebrow">A little more clarity</p><h2><TextReveal lines={["Good questions."]} /></h2><a className="action-text" href="mailto:contact@mktvlu.co">Talk to us <ArrowUpRight size={16} /></a></Reveal>
+          <Reveal className="faq-list">{questions.map(([question,answer])=><MotionAccordion key={question} question={question} answer={answer} />)}</Reveal>
+        </div>
       </div>
-
-      {/* Tech Pipeline Visual */}
-      <motion.div 
-        className="flex flex-wrap md:flex-nowrap justify-center items-center gap-4 mb-24 overflow-x-auto pb-8 md:pb-0"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={stagger}
-      >
-        {[
-          { icon: Camera, label: "Camera Input" },
-          { icon: Brain, label: "Claude Vision AI" },
-          { icon: Search, label: "Multi-Platform Search" },
-          { icon: Filter, label: "MAD Filtering" },
-          { icon: Database, label: "MRP Output" }
-        ].map((node, i, arr) => (
-            <div key={i} className="flex items-center contents md:flex">
-                <motion.div 
-                    variants={fadeUp}
-                    className="flex flex-col items-center gap-3 min-w-[120px]"
-                >
-                    <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-mint">
-                        <node.icon size={20} />
-                    </div>
-                    <span className="text-xs font-medium text-white/80 uppercase tracking-wide text-center">{node.label}</span>
-                </motion.div>
-                
-                {i < arr.length - 1 && (
-                    <div className="hidden md:block w-16 h-[1px] bg-white/10 relative mx-2">
-                         <motion.div 
-                            className="absolute top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full bg-mint"
-                            variants={flowDotAnimation}
-                            animate="animate"
-                        />
-                    </div>
-                )}
-                 {/* Mobile connector - downward arrow or simplified */}
-                 {i < arr.length - 1 && (
-                    <div className="block md:hidden w-full h-8 flex justify-center items-center">
-                        <div className="w-[1px] h-full bg-white/10" />
-                    </div>
-                 )}
-            </div>
-        ))}
-      </motion.div>
-
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-        variants={stagger}
-      >
-        <div className="space-y-3">
-            <h3 className="font-serif text-2xl text-white">Evidence Selection</h3>
-            <p className="text-sm text-white/60 leading-relaxed">
-                Sold prices weighted over asking prices. Region-adjusted. Time-decayed with 30-day half-life.
-            </p>
-        </div>
-        <div className="space-y-3">
-            <h3 className="font-serif text-2xl text-white">Outlier Removal</h3>
-            <p className="text-sm text-white/60 leading-relaxed">
-                Median Absolute Deviation filtering removes statistical anomalies, fraud listings, and miscategorized items.
-            </p>
-        </div>
-        <div className="space-y-3">
-            <h3 className="font-serif text-2xl text-white">Confidence Scoring</h3>
-            <p className="text-sm text-white/60 leading-relaxed">
-                0-100 score based on evidence count, source diversity, price consistency, and data recency.
-            </p>
-        </div>
-      </motion.div>
     </section>
   );
 }

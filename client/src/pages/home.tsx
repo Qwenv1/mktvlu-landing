@@ -1,35 +1,36 @@
+import { useState } from "react";
+import { MotionConfig } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { MarketEdgeBanner } from "@/components/MarketEdgeBanner";
-import { Problem } from "@/components/Problem";
-import { Solution } from "@/components/Solution";
-import { VLUCertified } from "@/components/VLUCertified";
+import { CinematicIntro } from "@/components/CinematicIntro";
+import { ExampleGallery } from "@/components/ExampleGallery";
 import { HowItWorks } from "@/components/HowItWorks";
 import { ProductShowcase } from "@/components/ProductShowcase";
-import { Features } from "@/components/Features";
-import { Personas } from "@/components/Personas";
+import { WorkflowShowcase } from "@/components/WorkflowShowcase";
 import { Technology } from "@/components/Technology";
-import { Roadmap } from "@/components/Roadmap";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
+import { examples } from "@/lib/examples";
+import { ReadingProgress } from "@/components/SiteMotion";
 
 export default function Home() {
+  const [example, setExample] = useState(examples[0]);
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-mint/30 selection:text-white overflow-x-hidden font-sans">
-      <Navbar />
-      <Hero />
-      <MarketEdgeBanner />
-      <Problem />
-      <Solution />
-      <VLUCertified />
-      <HowItWorks />
-      <ProductShowcase />
-      <Features />
-      <Personas />
-      <Technology />
-      <Roadmap />
-      <CTA />
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="landing-page">
+        <a className="skip-link" href="#main-content">Skip to content</a>
+        <Navbar />
+        <ReadingProgress />
+        <main id="main-content">
+          <CinematicIntro />
+          <ExampleGallery onSelect={setExample} />
+          <ProductShowcase example={example} onSelect={setExample} />
+          <WorkflowShowcase />
+          <HowItWorks />
+          <Technology />
+          <CTA />
+        </main>
+        <Footer />
+      </div>
+    </MotionConfig>
   );
 }
