@@ -5,17 +5,25 @@ import { PricingModal } from "./PricingModal";
 import { editorialEase, scrollToSection } from "./Reveal";
 
 function BrandMark() {
+  const reduced = useReducedMotion();
+
   return (
     <span className="brand-lockup" aria-hidden="true">
-      <span className="brand-mark">
-        <svg viewBox="0 0 44 44" role="presentation">
-          <path d="M10 16V10h6M28 10h6v6M34 28v6h-6M16 34h-6v-6" />
-          <ellipse cx="22" cy="22" rx="12.5" ry="5.5" transform="rotate(-31 22 22)" />
-          <ellipse cx="22" cy="22" rx="12.5" ry="5.5" transform="rotate(31 22 22)" />
-          <circle cx="22" cy="22" r="2.1" />
-        </svg>
-      </span>
-      <span className="brand-name"><strong>MKT</strong><span>VLU</span><i>.</i></span>
+      <motion.span
+        className="brand-mark"
+        initial={reduced ? false : { opacity: 0, scale: 0.82 }}
+        animate={reduced ? undefined : { opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease: editorialEase }}
+      >
+        <img src="/icon-180.png" alt="" />
+        <span className="brand-mark-glint" />
+      </motion.span>
+      <motion.span
+        className="brand-name"
+        initial={reduced ? false : { opacity: 0, x: -7 }}
+        animate={reduced ? undefined : { opacity: 1, x: 0 }}
+        transition={{ duration: 0.65, delay: 0.16, ease: editorialEase }}
+      >MKT<span>·</span>VLU</motion.span>
     </span>
   );
 }

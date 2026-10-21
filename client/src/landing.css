@@ -35,12 +35,11 @@
 .nav-inner { display: flex; align-items: center; justify-content: space-between; }
 .wordmark { display: inline-flex; align-items: center; color: #f4f5f1; }
 .brand-lockup { display: inline-flex; align-items: center; gap: 10px; }
-.brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid #ffffff1f; border-radius: 10px; background: linear-gradient(145deg, #ffffff14, #ffffff03); box-shadow: 0 0 0 .5px #ffffff18 inset, 0 8px 24px #0004; backdrop-filter: blur(12px); }
-.brand-mark svg { width: 25px; height: 25px; fill: none; stroke: #b7e0c6; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.25; }
-.brand-mark circle { fill: #b7e0c6; stroke: none; }
-.brand-name { display: inline-flex; align-items: baseline; font-size: 20px; font-weight: 400; letter-spacing: -.06em; line-height: 1; }
-.brand-name strong { font-weight: 700; }
-.brand-name i { margin-left: 2px; color: #b2e1c8; font-style: normal; }
+.brand-mark { position: relative; display: grid; place-items: center; width: 31px; height: 31px; overflow: hidden; border: 1px solid #ffffff22; border-radius: 10px; background: #050706; box-shadow: 0 0 0 .5px #ffffff18 inset, 0 8px 24px #0004; }
+.brand-mark img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.brand-mark-glint { position: absolute; inset: -30% 42% -30% -42%; background: linear-gradient(105deg, transparent, #ffffff80, transparent); opacity: .28; transform: rotate(14deg); animation: brand-glint 4.8s 1.2s ease-in-out infinite; }
+.brand-name { display: inline-flex; align-items: baseline; color: #f4f5f1; font-family: Georgia, "Times New Roman", serif; font-size: 19px; font-weight: 400; letter-spacing: -.035em; line-height: 1; }
+.brand-name span { color: #b7e0c6; padding-inline: 1px; }
 .nav-links { display: flex; align-items: center; gap: 28px; }
 .nav-links button { color: #b9bfb7; font-size: 12px; transition: color .2s; }
 .nav-links button:hover { color: white; }
@@ -126,12 +125,22 @@
 .workflow-layout { display: grid; grid-template-columns: 1.5fr .78fr; align-items: center; gap: 92px; }
 .workflow-film { position: relative; overflow: hidden; aspect-ratio: 16 / 10; border: 1px solid #ffffff19; border-radius: 22px; background: #090b09; box-shadow: 0 25px 80px #0004; }
 .workflow-film video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.workflow-brand-intro { position: absolute; z-index: 2; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: radial-gradient(circle at 50% 43%, #0b3a2e9c, #05070aeF 50%, #020307 100%); pointer-events: none; }
+.workflow-brand-intro::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 28%, #d7f6e622 50%, transparent 72%); transform: translateX(-110%); animation: brand-intro-sweep 2.2s .2s ease-out forwards; }
+.workflow-brand-intro img { position: relative; z-index: 1; width: clamp(58px, 8vw, 108px); height: auto; border-radius: 20%; box-shadow: 0 0 44px #2de1a24a; }
+.workflow-brand-wordmark { position: relative; z-index: 1; margin-top: 12px; color: #f5f7f1; font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 4.2vw, 56px); letter-spacing: -.04em; }
+.workflow-brand-wordmark span { color: #44d9aa; padding-inline: 2px; }
+.workflow-brand-line { position: relative; z-index: 1; margin-top: 26px; color: #f1f4ee; font-family: Georgia, "Times New Roman", serif; font-size: clamp(18px, 2.5vw, 34px); letter-spacing: -.035em; }
+.workflow-brand-line em { color: #45d9aa; font-style: normal; }
 .workflow-control { position: absolute; right: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 13px; border: 1px solid #ffffff2c; border-radius: 999px; background: #0e110ed9; color: #eef3eb; backdrop-filter: blur(12px); font-size: 10px; }
 .workflow-control:hover { background: #29352c; }
 .workflow-copy .eyebrow { color: #a9b9a9; }
 .workflow-copy h2 { margin-top: 22px; font-size: clamp(35px, 4.2vw, 59px); font-weight: 500; letter-spacing: -.065em; line-height: .99; }
 .workflow-copy > p:not(.eyebrow) { max-width: 330px; margin-top: 26px; color: #aeb8ad; font-size: 14px; line-height: 1.8; }
 .workflow-copy .action-text { margin-top: 27px; color: #b7e0c6; }
+
+@keyframes brand-glint { 0%, 62%, 100% { transform: translateX(-18px) rotate(14deg); opacity: 0; } 70% { opacity: .28; } 86% { transform: translateX(40px) rotate(14deg); opacity: .1; } }
+@keyframes brand-intro-sweep { to { transform: translateX(110%); } }
 
 /* Opening composition: photograph first, the valuation rests in the foreground. */
 .editorial-hero { background: #101210; }
